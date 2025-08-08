@@ -66,6 +66,72 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    function createScoreCell(numPlayers, row, colIndex) {
+        // Crea el input y los botones
+        const container = document.createElement("div");
+        container.style.display = "flex";
+        container.style.alignItems = "center";
+        container.style.gap = "4px";
+
+        const input = document.createElement("input");
+        input.type = "number";
+        input.min = 1;
+        input.max = numPlayers;
+        input.value = 0;
+        input.className = "scoreInput";
+        input.style.width = "40px";
+        input.style.textAlign = "center";
+
+        const btnMinus = document.createElement("button");
+        btnMinus.type = "button";
+        btnMinus.textContent = "−";
+        btnMinus.onclick = () => {
+            if (parseInt(input.value) > 1) {
+                input.value = parseInt(input.value) - 1;
+                input.dispatchEvent(new Event("input"));
+            }
+        };
+
+        const btnPlus = document.createElement("button");
+        btnPlus.type = "button";
+        btnPlus.textContent = "+";
+        btnPlus.onclick = () => {
+            if (parseInt(input.value) < numPlayers) {
+                input.value = parseInt(input.value) + 1;
+                input.dispatchEvent(new Event("input"));
+            }
+        };
+
+        container.appendChild(btnMinus);
+        container.appendChild(input);
+        container.appendChild(btnPlus);
+
+        // Ayuda automática
+        input.addEventListener("input", function () {
+            // autoFillScores(row, numPlayers);
+            updateVictories();
+        });
+
+        return container;
+    }
+
+    function autoFillScores(row, numPlayers) {
+        // Obtiene los valores actuales
+        const inputs = Array.from(row.querySelectorAll("input.scoreInput"));
+        const values = inputs.map(inp => parseInt(inp.value) || 0);
+        const used = values.filter(v => v > 0);
+
+        // Si falta solo uno por asignar, lo completa automáticamente
+        if (used.length === numPlayers - 1) {
+            const missing = [1,2,3].slice(0, numPlayers).find(n => !used.includes(n));
+            for (let i = 0; i < numPlayers; i++) {
+                if (!values[i]) {
+                    inputs[i].value = missing;
+                }
+            }
+        }
+    }
+
     document.getElementById("addGame").addEventListener("click", function () {
         let table = document.getElementById("playersTable");
         let inputRow = table.tHead.rows[1];
@@ -74,13 +140,8 @@ document.addEventListener("DOMContentLoaded", function () {
         let newRow = table.tBodies[0].insertRow(table.tBodies[0].rows.length - 1); // Antes de la fila de victorias
         for (let i = 0; i < numPlayers; i++) {
             let cell = newRow.insertCell();
-            cell.innerHTML = `<input type="number" min="1" max="3" value="0" class="scoreInput">`;
+            cell.appendChild(createScoreCell(numPlayers, newRow, i));
         }
-
-        // Agrega evento para actualizar victorias al cambiar el marcador
-        newRow.querySelectorAll("input").forEach(input => {
-            input.addEventListener("input", updateVictories);
-        });
 
         updateVictories();
     });
