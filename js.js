@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Agrega el input en la nueva celda antes de la última celda
         let newInputCell = document.createElement("th");
-        newInputCell.innerHTML = `<input type="text" name="play${headerRow.cells.length - 1}" id="play${headerRow.cells.length - 1}" />`;
+        newInputCell.innerHTML = `<input type="text" name="play${headerRow.cells.length - 1}" id="play${headerRow.cells.length - 1}" class="form-control" />`;
         inputRow.insertBefore(newInputCell, inputRow.lastElementChild);
     });
 
