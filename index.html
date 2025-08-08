@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="js.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>SMASH Score Up</h1>
+    <br>
+    <button id="addGame">Agregar Partida</button>
+    <br>
+    <br>
+    <button id="exportExcel">Exportar a Excel</button>
+    <br>
+    <h3>Agregar Nombres de Jugadores</h3>
+    <table id="playersTable">
+        <thead>
+            <tr>
+                <th>
+                    <h2>J1</h2>
+                </th>
+                <th>
+                    <h2>J2</h2>
+                </th>
+                <th>
+                    <button type="button" id="addCol">+</button>
+                </th>
+            </tr>
+            <tr>
+                <td><input type="text" name="play1" id="play1"></td>
+                <td><input type="text" name="play2" id="play2"></td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr id="victoryRow">
+                <td colspan="3"><b>Victorias: </b></td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+
+</html>
