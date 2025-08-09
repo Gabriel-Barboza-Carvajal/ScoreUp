@@ -4,26 +4,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Agregar encabezado (primera fila del thead)
         let headerRow = table.tHead.rows[0];
+        // Inserta el nuevo th ANTES del botón "+" (penúltima posición)
         let newHeader = document.createElement("th");
-        newHeader.innerHTML = `<h2>J${headerRow.cells.length}</h2>`;
-        headerRow.insertBefore(newHeader, headerRow.lastElementChild);
+        newHeader.innerHTML = `<h2>J${headerRow.cells.length - 1}</h2>`;
+        headerRow.insertBefore(newHeader, headerRow.cells[headerRow.cells.length - 2]);
 
         // Segunda fila del thead para los inputs
         let inputRow;
         if (table.tHead.rows.length < 2) {
-            inputRow = table.tHead.insertRow(1); // Crea la segunda fila si no existe
-            // Rellena con celdas vacías para alinear con los encabezados existentes
+            inputRow = table.tHead.insertRow(1);
             for (let i = 0; i < headerRow.cells.length; i++) {
                 inputRow.insertCell(i);
             }
         } else {
             inputRow = table.tHead.rows[1];
+            // Inserta la celda ANTES del botón "+" (penúltima posición)
+            let newInputCell = document.createElement("td");
+            newInputCell.innerHTML = `<input type="text" name="play${headerRow.cells.length - 2}" id="play${headerRow.cells.length - 2}" class="form-control" />`;
+            inputRow.insertBefore(newInputCell, inputRow.cells[inputRow.cells.length - 2]);
+            return;
         }
 
-        // Agrega el input en la nueva celda antes de la última celda
-        let newInputCell = document.createElement("th");
-        newInputCell.innerHTML = `<input type="text" name="play${headerRow.cells.length - 1}" id="play${headerRow.cells.length - 1}" class="form-control" />`;
-        inputRow.insertBefore(newInputCell, inputRow.lastElementChild);
+        // Si es la primera vez, pon los inputs en las posiciones correctas
+        for (let i = 0; i < headerRow.cells.length - 2; i++) {
+            inputRow.cells[i].innerHTML = `<input type="text" name="play${i + 1}" id="play${i + 1}" class="form-control" />`;
+        }
     });
 
 
@@ -105,11 +110,31 @@ document.addEventListener("DOMContentLoaded", function () {
         let inputRow = table.tHead.rows[1];
         let numPlayers = inputRow.querySelectorAll("input").length;
 
-        let newRow = table.tBodies[0].insertRow(table.tBodies[0].rows.length - 1); // Antes de la fila de victorias
+        // Inserta la nueva fila antes de la fila de victorias
+        let tbody = table.tBodies[0];
+        let victoryRow = document.getElementById("victoryRow");
+        let newRow = tbody.insertRow(victoryRow ? victoryRow.rowIndex - table.tHead.rows.length : -1);
+
+        // 1. Celdas de jugadores
         for (let i = 0; i < numPlayers; i++) {
             let cell = newRow.insertCell();
             cell.appendChild(createScoreCell(numPlayers, newRow, i));
         }
+
+        // 2. Celda vacía para el botón "+"
+        newRow.insertCell(); // Esto mantiene la alineación con el thead
+
+        // 3. Celda para el basurero
+        let deleteCell = newRow.insertCell();
+        let btn = document.createElement("button");
+        btn.className = "btn btn-danger btn-sm";
+        btn.innerHTML = "🗑️";
+        btn.title = "Eliminar partida";
+        btn.onclick = function () {
+            newRow.remove();
+            updateVictories();
+        };
+        deleteCell.appendChild(btn);
 
         updateVictories();
     });
