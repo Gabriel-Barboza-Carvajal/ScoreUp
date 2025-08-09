@@ -4,55 +4,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script type="text/javascript" src="js.js?v=6"></script>
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0d6efd">
     <title>SMASH Score Up</title>
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <link rel="apple-touch-icon" href="icon-192.png">
-    <!-- Puedes agregar más tamaños si tienes otros íconos -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" src="js.js?v=6"></script>
+    <!-- ...tu CSS y otros enlaces... -->
+    <style>
+        body {
+            background-image: url('bk.jpg');
+            background-repeat: repeat;
+            background-size: auto;
+            background-position: center center;
+            background-color: #000;
+        }
+    </style>
 </head>
 
 <body>
     <div class="container py-4">
-        <h1 class="mb-4 text-center">SMASH Score Up</h1>
-        <div class="mb-3 d-flex flex-wrap gap-2 justify-content-center">
-            <button id="addGame" class="btn btn-primary">Agregar Partida</button>
-            <button id="exportExcel" class="btn btn-success">Exportar a Excel</button>
-        </div>
-        <h3>Agregar Nombres de Jugadores</h3>
-        <p class="text-secondary small">
-            Haz clic en el recuadro de cada jugador para asignar su lugar en la partida.<br>
-            El primer clic asigna el 1° lugar, el segundo clic el 2° lugar, y así sucesivamente.<br>
-            Si quieres reiniciar los lugares de una partida, haz doble clic en cualquier
-        </p>
-        <div class="table-responsive">
-            <table id="playersTable" class="table table-bordered align-middle text-center">
-                <thead>
-                    <tr>
-                        <th><h2>J1</h2></th>
-                        <th><h2>J2</h2></th>
-                        <th>
-                            <button type="button" id="addCol" class="btn btn-outline-secondary btn-sm">+</button>
-                        </th>
-                        <th>Eliminar</th> <!-- Nueva columna -->
-                    </tr>
-                    <tr>
-                        <td><input type="text" name="play1" id="play1" class="form-control scoreInput"></td>
-                        <td><input type="text" name="play2" id="play2" class="form-control scoreInput"></td>
-                        <td></td>
-                        <td></td> <!-- Nueva celda vacía -->
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr id="victoryRow">
-                        <td colspan="3"><b>Victorias: </b></td>
-                        <td></td> <!-- Celda vacía para la columna de eliminar -->
-                    </tr>
-                </tbody>
-            </table>
+        <div class="mx-auto" style="max-width: 900px;">
+            <div class="bg-dark bg-opacity-75 rounded p-4 shadow mb-4">
+                <h1 class="mb-4 text-center text-white">SMASH Score Up</h1>
+                <div class="mb-3 d-flex flex-wrap gap-2 justify-content-center">
+                    <button id="addGame" class="btn btn-primary">Agregar Partida</button>
+                    <button id="exportExcel" class="btn btn-success">Exportar a Excel</button>
+                </div>
+                <h3 class="text-white">Agregar Nombres de Jugadores</h3>
+                <p class="text-secondary small text-white-50">
+                    Haz clic en el recuadro de cada jugador para asignar su lugar en la partida.<br>
+                    El primer clic asigna el 1° lugar, el segundo clic el 2° lugar, y así sucesivamente.<br>
+                    Si quieres reiniciar los lugares de una partida, haz doble clic en cualquier recuadro de esa fila.
+                </p>
+                <div class="table-responsive">
+                    <table id="playersTable" class="table table-bordered align-middle text-center bg-light bg-opacity-75">
+                        <thead>
+                            <tr>
+                                <th><h2>J1</h2></th>
+                                <th><h2>J2</h2></th>
+                                <th>
+                                    <button type="button" id="addCol" class="btn btn-outline-secondary btn-sm">+</button>
+                                </th>
+                                <th>Eliminar</th> <!-- Nueva columna -->
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="play1" id="play1" class="form-control scoreInput"></td>
+                                <td><input type="text" name="play2" id="play2" class="form-control scoreInput"></td>
+                                <td></td>
+                                <td></td> <!-- Nueva celda vacía -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="victoryRow">
+                                <td colspan="3"><b>Victorias: </b></td>
+                                <td></td> <!-- Celda vacía para la columna de eliminar -->
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </body>
