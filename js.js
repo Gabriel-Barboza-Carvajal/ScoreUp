@@ -67,69 +67,37 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function createScoreCell(numPlayers, row, colIndex) {
-        // Crea el input y los botones
-        const container = document.createElement("div");
-        container.style.display = "flex";
-        container.style.alignItems = "center";
-        container.style.gap = "4px";
-
         const input = document.createElement("input");
-        input.type = "number";
-        input.min = 1;
-        input.max = numPlayers;
-        input.value = 0;
-        input.className = "scoreInput";
-        input.style.width = "40px";
-        input.style.textAlign = "center";
+        input.type = "text";
+        input.readOnly = true;
+        input.className = "form-control scoreInput";
+        input.style.cursor = "pointer";
+        input.value = "";
 
-        const btnMinus = document.createElement("button");
-        btnMinus.type = "button";
-        btnMinus.textContent = "−";
-        btnMinus.onclick = () => {
-            if (parseInt(input.value) > 1) {
-                input.value = parseInt(input.value) - 1;
-                input.dispatchEvent(new Event("input"));
-            }
-        };
+        input.addEventListener("click", function () {
+            // Obtén todos los inputs de la fila
+            const inputs = Array.from(row.querySelectorAll("input.scoreInput"));
+            // Busca el siguiente puesto disponible (1, 2, 3, ...)
+            let used = inputs.map(inp => parseInt(inp.value)).filter(v => !isNaN(v));
+            let next = 1;
+            while (used.includes(next) && next <= numPlayers) next++;
+            if (next > numPlayers) return; // Todos asignados
 
-        const btnPlus = document.createElement("button");
-        btnPlus.type = "button";
-        btnPlus.textContent = "+";
-        btnPlus.onclick = () => {
-            if (parseInt(input.value) < numPlayers) {
-                input.value = parseInt(input.value) + 1;
-                input.dispatchEvent(new Event("input"));
-            }
-        };
+            // Si ya tiene valor, no hacer nada
+            if (input.value) return;
 
-        container.appendChild(btnMinus);
-        container.appendChild(input);
-        container.appendChild(btnPlus);
-
-        // Ayuda automática
-        input.addEventListener("input", function () {
-            // autoFillScores(row, numPlayers);
+            input.value = next;
             updateVictories();
         });
 
-        return container;
-    }
+        // Permitir limpiar la fila con doble click en cualquier input
+        input.addEventListener("dblclick", function () {
+            const inputs = Array.from(row.querySelectorAll("input.scoreInput"));
+            inputs.forEach(inp => inp.value = "");
+            updateVictories();
+        });
 
-    function autoFillScores(row, numPlayers) {
-        // Obtiene los valores actuales
-        const inputs = Array.from(row.querySelectorAll("input.scoreInput"));
-        const values = inputs.map(inp => parseInt(inp.value) || 0);
-        const used = values.filter(v => v > 0);
-
-        // Si falta solo uno por asignar, lo completa automáticamente
-        if (used.length === numPlayers - 1) {
-            const missing = [1,2,3].slice(0, numPlayers).find(n => !used.includes(n));
-            for (let i = 0; i < numPlayers; i++) {
-                if (!values[i]) {
-                    inputs[i].value = missing;
-                }
-            }
-        }
+        return input;
     }
 
     document.getElementById("addGame").addEventListener("click", function () {
