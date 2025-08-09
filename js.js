@@ -195,4 +195,10 @@ document.addEventListener("DOMContentLoaded", function () {
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
     });
+
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+            navigator.serviceWorker.register('sw.js');
+        });
+    }
 });
