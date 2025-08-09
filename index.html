@@ -24,6 +24,7 @@
             background-color: #000;
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 </head>
 
 <body>
@@ -34,6 +35,7 @@
                 <div class="mb-3 d-flex flex-wrap gap-2 justify-content-center">
                     <button id="addGame" class="btn btn-primary">Agregar Partida</button>
                     <button id="exportExcel" class="btn btn-success">Exportar a Excel</button>
+                    <a id="seeStats" href="stats.html" class="btn btn-primary">Ver estadísticas</a>
                 </div>
                 <h3 class="text-white">Agregar Nombres de Jugadores</h3>
                 <p class="text-secondary small text-white-50">
@@ -42,13 +44,19 @@
                     Si quieres reiniciar los lugares de una partida, haz doble clic en cualquier recuadro de esa fila.
                 </p>
                 <div class="table-responsive">
-                    <table id="playersTable" class="table table-bordered align-middle text-center bg-light bg-opacity-75">
+                    <table id="playersTable"
+                        class="table table-bordered align-middle text-center bg-light bg-opacity-75">
                         <thead>
                             <tr>
-                                <th><h2>J1</h2></th>
-                                <th><h2>J2</h2></th>
                                 <th>
-                                    <button type="button" id="addCol" class="btn btn-outline-secondary btn-sm">+</button>
+                                    <h2>J1</h2>
+                                </th>
+                                <th>
+                                    <h2>J2</h2>
+                                </th>
+                                <th>
+                                    <button type="button" id="addCol"
+                                        class="btn btn-outline-secondary btn-sm">+</button>
                                 </th>
                                 <th>Eliminar</th> <!-- Nueva columna -->
                             </tr>
