@@ -1,4 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
+
+    document.addEventListener('gesturestart', function (e) {
+        e.preventDefault();
+    });
+    
     document.getElementById("addCol").addEventListener("click", function () {
         let table = document.getElementById("playersTable");
 
@@ -95,50 +100,56 @@ document.addEventListener("DOMContentLoaded", function () {
             updateVictories();
         });
 
-        // Permitir limpiar la fila con doble click en cualquier input
-        input.addEventListener("dblclick", function () {
-            const inputs = Array.from(row.querySelectorAll("input.scoreInput"));
-            inputs.forEach(inp => inp.value = "");
-            updateVictories();
-        });
-
         return input;
     }
 
-    document.getElementById("addGame").addEventListener("click", function () {
-        let table = document.getElementById("playersTable");
-        let inputRow = table.tHead.rows[1];
-        let numPlayers = inputRow.querySelectorAll("input").length;
+  document.getElementById("addGame").addEventListener("click", function () {
+    let table = document.getElementById("playersTable");
+    let inputRow = table.tHead.rows[1];
+    let numPlayers = inputRow.querySelectorAll("input").length;
 
-        // Inserta la nueva fila antes de la fila de victorias
-        let tbody = table.tBodies[0];
-        let victoryRow = document.getElementById("victoryRow");
-        let newRow = tbody.insertRow(victoryRow ? victoryRow.rowIndex - table.tHead.rows.length : -1);
+    // Inserta la nueva fila antes de la fila de victorias
+    let tbody = table.tBodies[0];
+    let victoryRow = document.getElementById("victoryRow");
+    let newRow = tbody.insertRow(victoryRow ? victoryRow.rowIndex - table.tHead.rows.length : -1);
 
-        // 1. Celdas de jugadores
-        for (let i = 0; i < numPlayers; i++) {
-            let cell = newRow.insertCell();
-            cell.appendChild(createScoreCell(numPlayers, newRow, i));
-        }
+    // 1. Celdas de jugadores (inputs de puntuación)
+    for (let i = 0; i < numPlayers; i++) {
+        let cell = newRow.insertCell();
+        cell.appendChild(createScoreCell(numPlayers, newRow, i));
+    }
 
-        // 2. Celda vacía para el botón "+"
-        newRow.insertCell(); // Esto mantiene la alineación con el thead
+    // 2. Celda vacía para el botón "+" (alineación con thead)
+    // newRow.insertCell();
 
-        // 3. Celda para el basurero
-        let deleteCell = newRow.insertCell();
-        let btn = document.createElement("button");
-        btn.className = "btn btn-danger btn-sm";
-        btn.innerHTML = "🗑️";
-        btn.title = "Eliminar partida";
-        btn.onclick = function () {
-            newRow.remove();
-            updateVictories();
-        };
-        deleteCell.appendChild(btn);
-
+    // 3. Celda para el botón "Limpiar" (¡NUEVA POSICIÓN!)
+    let clearCell = newRow.insertCell();
+    let clearBtn = document.createElement("button");
+    clearBtn.className = "btn btn-info btn-sm";
+    clearBtn.innerHTML = "🧹";  // Icono de recarga (alternativas: "🗘" o "⏮️")
+    clearBtn.title = "Reiniciar puntuaciones";
+    clearBtn.style.padding = "0.25rem";  // Más compacto
+    clearBtn.onclick = function () {
+        const inputs = Array.from(newRow.querySelectorAll("input.scoreInput"));
+        inputs.forEach(inp => inp.value = "");
         updateVictories();
-    });
+    };
+    clearCell.appendChild(clearBtn);
 
+    // 4. Celda para el botón de basura (🗑️)
+    let deleteCell = newRow.insertCell();
+    let btn = document.createElement("button");
+    btn.className = "btn btn-danger btn-sm";
+    btn.innerHTML = "🗑️";
+    btn.title = "Eliminar partida";
+    btn.onclick = function () {
+        newRow.remove();
+        updateVictories();
+    };
+    deleteCell.appendChild(btn);
+
+    updateVictories();
+});
     // Si ya hay filas, agrega el evento
     document.querySelectorAll(".scoreInput").forEach(input => {
         input.addEventListener("input", updateVictories);
