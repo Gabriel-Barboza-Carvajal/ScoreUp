@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">    
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -40,6 +40,10 @@
                     <button id="addGame" class="btn btn-primary">Agregar Partida</button>
                     <button id="exportExcel" class="btn btn-success">Exportar a Excel</button>
                 </div>
+
+                <button type="button" id="resetPlayers" class="btn btn-outline-danger btn-sm">Reset Jugadores</button>
+                <button type="button" id="resetGames" class="btn btn-outline-warning btn-sm">Reset Partidas</button>
+
                 <h3 class="text-white">Agregar Nombres de Jugadores</h3>
                 <p class="text-secondary small text-white-50">
                     Haz clic en cada celda para asignar lugares: 1° clic = 1° lugar, 2° clic = 2° lugar.<br>
@@ -63,8 +67,10 @@
                                 <th>Eliminar</th> <!-- Nueva columna -->
                             </tr>
                             <tr>
-                                <td><input type="text" name="play1" id="play1" class="form-control scoreInput"></td>
-                                <td><input type="text" name="play2" id="play2" class="form-control scoreInput"></td>
+                                <td><input type="text" name="play1" id="play1" class="form-control scoreInput"
+                                        placeholder="Ingrese el nombre"></td>
+                                <td><input type="text" name="play2" id="play2" class="form-control scoreInput"
+                                        placeholder="Ingrese el nombre"></td>
                                 <td></td>
                                 <td></td> <!-- Nueva celda vacía -->
                             </tr>
@@ -76,6 +82,9 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+                <div id="appVersion" class="justify-content-right text-white mt-4">
+                    v1.2.0
                 </div>
             </div>
         </div>

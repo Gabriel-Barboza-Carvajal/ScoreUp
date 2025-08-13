@@ -1,5 +1,9 @@
 # Historial de Versiones
 
+## [v1.2.0] - 13/08/25
+- La aplicación guarda tus datos para que puedas continuar donde lo dejaste
+- Mejora en cache
+
 ## [v1.1.1] - 12/08/25
 - Archivo de logs de cambos
 
