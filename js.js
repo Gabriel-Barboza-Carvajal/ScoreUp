@@ -368,69 +368,79 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    document.getElementById("resetPlayers").addEventListener("click", function () {
-        const table = document.getElementById("playersTable");
-        const headerRow = table.tHead.rows[0];
-        const inputRow = table.tHead.rows[1];
-        const tbody = table.tBodies[0];
+// --- Reset Jugadores ---
+document.getElementById("resetPlayers").addEventListener("click", function () {
+    const confirmReset = confirm("¿Estás seguro de que quieres reiniciar todos los jugadores? Se perderán los datos.");
+    if (!confirmReset) return; // Si cancela, no hacer nada
 
-        // Determinar cuántos jugadores por defecto hay en el HTML (ej: 2)
-        const defaultPlayers = 2;
+    const table = document.getElementById("playersTable");
+    const headerRow = table.tHead.rows[0];
+    const inputRow = table.tHead.rows[1];
+    const tbody = table.tBodies[0];
 
-        // Eliminar todas las columnas adicionales en el thead
-        while (headerRow.cells.length > defaultPlayers + 2) { // +2 por "+" y "Eliminar"
-            headerRow.deleteCell(defaultPlayers);
-            inputRow.deleteCell(defaultPlayers);
-        }
+    // Determinar cuántos jugadores por defecto hay en el HTML (ej: 2)
+    const defaultPlayers = 2;
 
-        // Limpiar los valores de los inputs de nombres de jugadores
-        inputRow.querySelectorAll("input").forEach((input, i) => {
-            if (i < defaultPlayers) input.value = "";
-        });
+    // Eliminar todas las columnas adicionales en el thead
+    while (headerRow.cells.length > defaultPlayers + 2) { // +2 por "+" y "Eliminar"
+        headerRow.deleteCell(defaultPlayers);
+        inputRow.deleteCell(defaultPlayers);
+    }
 
-        // Eliminar todas las columnas adicionales en tbody
-        for (let i = 0; i < tbody.rows.length; i++) {
-            const row = tbody.rows[i];
-            if (row.id === "victoryRow") continue; // No tocar fila de victorias
-            while (row.cells.length > defaultPlayers + 2) {
-                row.deleteCell(defaultPlayers);
-            }
-
-            // Limpiar valores de las celdas restantes
-            for (let j = 0; j < defaultPlayers; j++) {
-                const input = row.cells[j]?.querySelector("input");
-                if (input) input.value = "";
-            }
-        }
-
-        // Actualizar victorias y localStorage
-        updateVictories();
-        guardarTabla();
+    // Limpiar inputs de nombres
+    inputRow.querySelectorAll("input").forEach((input, i) => {
+        if (i < defaultPlayers) input.value = "";
     });
 
-    document.getElementById("resetGames").addEventListener("click", function () {
-        const table = document.getElementById("playersTable");
-        const tbody = table.tBodies[0];
-
-        // Eliminar todas las filas excepto la fila de victorias
-        Array.from(tbody.rows).forEach(row => {
-            if (row.id !== "victoryRow") row.remove();
-        });
-
-        // Limpiar fila de victorias
-        const victoryRow = document.getElementById("victoryRow");
-        if (victoryRow) {
-            victoryRow.innerHTML = "";
-            const inputRow = table.tHead.rows[1];
-            const numPlayers = inputRow.querySelectorAll("input").length;
-            for (let i = 0; i < numPlayers; i++) {
-                victoryRow.insertCell();
-            }
+    // Eliminar columnas extra en el tbody
+    for (let i = 0; i < tbody.rows.length; i++) {
+        const row = tbody.rows[i];
+        if (row.id === "victoryRow") continue; // no tocar fila de victorias
+        while (row.cells.length > defaultPlayers + 2) {
+            row.deleteCell(defaultPlayers);
         }
+        for (let j = 0; j < defaultPlayers; j++) {
+            const input = row.cells[j]?.querySelector("input");
+            if (input) input.value = "";
+        }
+    }
 
-        // Actualizar localStorage
-        guardarTabla();
+    // Actualizar datos
+    guardarTabla();
+    updateVictories();
+
+    alert("Se han reiniciado los jugadores correctamente.");
+});
+
+// --- Reset Partidas ---
+document.getElementById("resetGames").addEventListener("click", function () {
+    const confirmReset = confirm("¿Estás seguro de que quieres reiniciar todas las partidas? Se perderán todas las puntuaciones.");
+    if (!confirmReset) return; // Si cancela, no hacer nada
+
+    const table = document.getElementById("playersTable");
+    const tbody = table.tBodies[0];
+
+    // Eliminar todas las filas excepto la de victorias
+    Array.from(tbody.rows).forEach(row => {
+        if (row.id !== "victoryRow") row.remove();
     });
+
+    // Limpiar la fila de victorias
+    const victoryRow = document.getElementById("victoryRow");
+    if (victoryRow) {
+        victoryRow.innerHTML = "";
+        const numPlayers = table.tHead.rows[1].querySelectorAll("input").length;
+        for (let i = 0; i < numPlayers; i++) {
+            victoryRow.insertCell();
+        }
+    }
+
+    // Actualizar datos
+    guardarTabla();
+    updateVictories();
+
+    alert("Se han eliminado todas las partidas.");
+});
 
 
 });
