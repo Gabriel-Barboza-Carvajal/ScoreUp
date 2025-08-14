@@ -1,4 +1,6 @@
-<img width="1920" height="1040" alt="Aplicación" src="https://github.com/user-attachments/assets/4bd77586-9fce-4da4-9529-be11a29a13b0" />
+
+<img width="1920" height="941" alt="imagen" src="https://github.com/user-attachments/assets/d20a082b-3e43-401f-a4c4-d03a07e866dc" />
+
 
 # SMASH Score Up
 
